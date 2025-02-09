@@ -15,8 +15,8 @@ on:
         description: 'Application Version (e.g. 1.0.0)'
         required: true
         default: '1.0.0'
-      versionCode:
-        description: 'Build Number'
+      buildNumber:
+        description: 'Build Number (must be an integer)'
         required: true
         default: '1'
         type: string
@@ -51,14 +51,9 @@ jobs:
       run: >
         dotnet publish ClickMe.sln -c Release -f net8.0-android 
         /p:ApplicationId=${{ github.event.inputs.applicationId || 'com.companyname.clickme' }}
-        /p:ApplicationVersion=${{ github.event.inputs.versionName || '1.0.0' }}
         /p:ApplicationDisplayVersion=${{ github.event.inputs.versionName || '1.0.0' }}
-        /p:ApplicationVersionCode=${{ github.event.inputs.versionCode || '1' }}
-
-    - name: List Build Output
-      run: |
-        dir /s ClickMe\bin\Release\net8.0-android\*.apk
-        
+        /p:ApplicationVersion=${{ github.event.inputs.buildNumber || '1' }}
+      
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
